@@ -1,0 +1,59 @@
+module multiplicador4x4 (S, A, B);
+
+	input [3:0] A, B;
+	output [7:0] S;
+	
+	// GERANDO PRODUTOS PARCIAIS Ax * Bx;
+	
+	wire pp00, pp01, pp02, pp03;
+	wire pp10, pp11, pp12, pp13;
+	wire pp20, pp21, pp22, pp23;
+	wire pp30, pp31, pp32, pp33;
+
+	and And00 (pp00, A[0], B[0]); 
+	and And01 (pp01, A[1], B[0]); 
+	and And02 (pp02, A[2], B[0]); 
+	and And03 (pp03, A[3], B[0]);
+
+	and And10 (pp10, A[0], B[1]); 
+	and And11 (pp11, A[1], B[1]); 
+	and And12 (pp12, A[2], B[1]); 
+	and And13 (pp13, A[3], B[1]);
+
+	and And20 (pp20, A[0], B[2]); 
+	and And21 (pp21, A[1], B[2]); 
+	and And22 (pp22, A[2], B[2]); 
+	and And23 (pp23, A[3], B[2]);
+
+	and And30 (pp30, A[0], B[3]); 
+	and And31 (pp31, A[1], B[3]); 
+	and And32 (pp32, A[2], B[3]); 
+	and And33 (pp33, A[3], B[3]);
+
+	// =========================================================
+	// FIOS INTERMEDIÁRIOS
+
+	wire [3:0] somaL1, somaL2;
+	wire [3:0] carryL0, carryL1, carryL2;
+	
+	or Or0 (S[0], pp00, 1'b0); // primeiro produto 
+	 
+	// SOMANDO LINHA 1
+	meiosomador M11 (.S(S[1]), .Co(carryL0[0]), .A(pp01), .B(pp10));
+	somadorbase M12 (.S(somaL1[1]), .Co(carryL0[1]), .A(pp02), .B(pp11), .Cin(carryL0[0]));
+	somadorbase M13 (.S(somaL1[2]), .Co(carryL0[2]), .A(pp03), .B(pp12), .Cin(carryL0[1]));
+	somadorbase M14 (.S(somaL1[3]), .Co(carryL0[3]), .A(1'b0), .B(pp13), .Cin(carryL0[2]));
+	
+	// SOMANDO LINHA 2 
+	meiosomador M21 (.S(S[2]), .Co(carryL1[0]), .A(somaL1[1]), .B(pp20));
+	somadorbase M22 (.S(somaL2[1]), .Co(carryL1[1]), .A(somaL1[2]), .B(pp21), .Cin(carryL1[0]));
+	somadorbase M23 (.S(somaL2[2]), .Co(carryL1[2]), .A(somaL1[3]), .B(pp22), .Cin(carryL1[1]));
+	somadorbase M24 (.S(somaL2[3]), .Co(carryL1[3]), .A(carryL0[3]), .B(pp23), .Cin(carryL1[2]));
+	
+	// SOMANDO LINHA 3	
+	meiosomador M31 (.S(S[3]), .Co(carryL2[0]), .A(somaL2[1]), .B(pp30));
+	somadorbase M32 (.S(S[4]), .Co(carryL2[1]), .A(somaL2[2]), .B(pp31), .Cin(carryL2[0]));
+	somadorbase M33 (.S(S[5]), .Co(carryL2[2]), .A(somaL2[3]), .B(pp32), .Cin(carryL2[1]));
+	somadorbase M34 (.S(S[6]), .Co(S[7]), .A(carryL1[3]), .B(pp33), .Cin(carryL2[2]));
+	
+endmodule

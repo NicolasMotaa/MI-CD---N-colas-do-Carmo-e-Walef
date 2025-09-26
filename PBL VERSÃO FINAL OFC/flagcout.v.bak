@@ -1,0 +1,22 @@
+module flagcout (F, Sel, Cout, Bout);
+
+	input [2:0] Sel;
+	input Cout, Bout;
+	output F;
+	
+	
+	// ~A ~B ~C D + ~A ~B C E
+	
+	wire nsel2, nsel1, nsel0;
+	wire and0, and1, and2, and3, and4;
+	
+	and And0 (and0, nsel2, nsel1);
+	and And1 (and1, nsel0, Cout);
+	and And2 (and2, nsel0, Bout);
+	
+	and And3 (and3, and0, and1);
+	and And4 (and4, and0, and2); 
+	
+	or OrFlag (F, and3, and4);
+	
+endmodule

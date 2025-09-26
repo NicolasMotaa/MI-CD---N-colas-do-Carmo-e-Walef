@@ -1,0 +1,54 @@
+module divisor4x4 (
+    input  [3:0] A,   // Dividendo
+    input  [3:0] B,   // Divisor
+    output [3:0] Q,   // Quociente
+    output [3:0] R    // Resto final
+);
+
+    wire [3:0] R0, R1, R2; // restos intermediários
+    wire       Q3, Q2, Q1, Q0;
+
+    // Estágio 0 - MSB do dividendo
+    estagio_divisao E0 (
+        .Resto_anterior(4'b0000), // resto inicial = 0
+        .D_bit(A[3]),
+        .B(B),
+        .Resto_atual(R0),
+        .Q_bit(Q3)
+    );
+
+    // Estágio 1
+    estagio_divisao E1 (
+        .Resto_anterior(R0),
+        .D_bit(A[2]),
+        .B(B),
+        .Resto_atual(R1),
+        .Q_bit(Q2)
+    );
+
+    // Estágio 2
+    estagio_divisao E2 (
+        .Resto_anterior(R1),
+        .D_bit(A[1]),
+        .B(B),
+        .Resto_atual(R2),
+        .Q_bit(Q1)
+    );
+
+    // Estágio 3 - LSB do dividendo
+    estagio_divisao E3 (
+        .Resto_anterior(R2),
+        .D_bit(A[0]),
+        .B(B),
+        .Resto_atual(R),
+        .Q_bit(Q0)
+    );
+
+    // Concatenar quociente final
+    // Q = {Q3, Q2, Q1, Q0};
+    or (Q[3], Q3, 1'b0);
+    or (Q[2], Q2, 1'b0);
+    or (Q[1], Q1, 1'b0);
+    or (Q[0], Q0, 1'b0);
+
+endmodule

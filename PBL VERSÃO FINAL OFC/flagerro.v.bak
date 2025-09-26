@@ -1,0 +1,16 @@
+module flagerro (E, Sel, Erro);
+
+	input [3:0] Sel;
+	input Erro;
+	output E;
+	
+	wire nots2, and0, and1;
+	
+	not (nots2, Sel[2]);
+	
+	and And0 (and0, nots2, Sel[1]);
+	and And1 (and1, Sel[0], Erro);
+	and And2 (E, and1, and0);
+	
+endmodule
+	

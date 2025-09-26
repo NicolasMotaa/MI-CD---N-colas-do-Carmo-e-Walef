@@ -1,0 +1,26 @@
+module flagoverflow (Z, A, B, C, D, E, F);
+
+	input A,B,C,D,E,F;
+	ouput Z;
+	
+	
+	// BCF + BCE + BCD + A
+	
+	wire AND0, AND1, AND2, AND3, AND4, AND5;
+	wire OR0, OR1;
+	
+	and And0 (AND0, B, C);
+	and And1(AND1, B, C);
+	and And2(AND2, B, C);
+	
+	and and3 (AND3, AND0, F);
+	and and4 (AND4, AND1, E);
+	and and5 (AND5, AND2, D);
+	
+	or or0 (OR0, AND3, AND4);
+	or or1 (OR1, AND5, A);
+	or or2 (Z, OR0, OR1);
+	
+endmodule
+	
+	

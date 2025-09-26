@@ -1,0 +1,69 @@
+module multiplexador8x8(Out, Sel, Soma, Sub, Multi, Div, AndOp, OrOp, XorOp);
+
+    input  [2:0] Sel;
+    input  [7:0] Multi, Div;
+    input  [3:0] Soma, Sub;
+    input  [3:0] AndOp, OrOp, XorOp;
+    output [7:0] Out;
+	 
+	// =========================================================
+	// INSTÂNCIAS DO MULTIPLEXADOR BASE
+	// OBS: As operações que não possuem 4+ bits de saida são complementadas com 0 (1'b0)
+
+    multiplexadorbase BIT0 (
+        .Z(Out[0]), 
+        .S2(Sel[2]), .S1(Sel[1]), .S0(Sel[0]),
+        .E0(Soma[0]), .E1(Sub[0]), .E2(Multi[0]), .E3(Div[0]), 
+        .E4(AndOp[0]), .E5(OrOp[0]), .E6(XorOp[0]), .E7(1'b0)
+    );
+
+    multiplexadorbase BIT1 (
+        .Z(Out[1]), 
+        .S2(Sel[2]), .S1(Sel[1]), .S0(Sel[0]),
+        .E0(Soma[1]), .E1(Sub[1]), .E2(Multi[1]), .E3(Div[1]), 
+        .E4(AndOp[1]), .E5(OrOp[1]), .E6(XorOp[1]), .E7(1'b0)
+    );
+
+    multiplexadorbase BIT2 (
+        .Z(Out[2]), 
+        .S2(Sel[2]), .S1(Sel[1]), .S0(Sel[0]),
+        .E0(Soma[2]), .E1(Sub[2]), .E2(Multi[2]), .E3(Div[2]), 
+        .E4(AndOp[2]), .E5(OrOp[2]), .E6(XorOp[2]), .E7(1'b0)
+    );
+
+    multiplexadorbase BIT3 (
+        .Z(Out[3]), 
+        .S2(Sel[2]), .S1(Sel[1]), .S0(Sel[0]),
+        .E0(Soma[3]), .E1(Sub[3]), .E2(Multi[3]), .E3(Div[3]), 
+        .E4(AndOp[3]), .E5(OrOp[3]), .E6(XorOp[3]), .E7(1'b0)
+    );
+
+    multiplexadorbase BIT4 (
+        .Z(Out[4]), 
+        .S2(Sel[2]), .S1(Sel[1]), .S0(Sel[0]),
+        .E0(1'b0), .E1(1'b0), .E2(Multi[4]), .E3(Div[4]), 
+        .E4(1'b0), .E5(1'b0), .E6(1'b0), .E7(1'b0)
+    );
+
+    multiplexadorbase BIT5 (
+        .Z(Out[5]), 
+        .S2(Sel[2]), .S1(Sel[1]), .S0(Sel[0]),
+        .E0(1'b0), .E1(1'b0), .E2(Multi[5]), .E3(Div[5]), 
+        .E4(1'b0), .E5(1'b0), .E6(1'b0), .E7(1'b0)
+    );
+
+    multiplexadorbase BIT6 (
+        .Z(Out[6]), 
+        .S2(Sel[2]), .S1(Sel[1]), .S0(Sel[0]),
+        .E0(1'b0), .E1(1'b0), .E2(Multi[6]), .E3(Div[6]), 
+        .E4(1'b0), .E5(1'b0), .E6(1'b0), .E7(1'b0)
+    );
+
+    multiplexadorbase BIT7 (
+        .Z(Out[7]), 
+        .S2(Sel[2]), .S1(Sel[1]), .S0(Sel[0]),
+        .E0(1'b0), .E1(1'b0), .E2(Multi[7]), .E3(Div[7]), 
+        .E4(1'b0), .E5(1'b0), .E6(1'b0), .E7(1'b0)
+    );
+
+endmodule
